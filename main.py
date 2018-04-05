@@ -43,5 +43,5 @@ if __name__ == "__main__":
             msg['To'] = item
             smtpObject.sendmail(msg['From'],msg['To'],msg.as_string())
 
-    file.close()
+        file.close()
     smtpObject.quit()
