@@ -17,31 +17,31 @@ def email_parse(filename):
     with open("emails.txt","r") as f:
         line = f.read()
         f.close()
-
-
-if __name__ == "__main__":
-
-    uid = ""
-    pwd = ""
+def session(uid, pwd, fromAddr, toAddr):
+    # msg object has to be recreated in every new session
     msg = message_parse("message.txt")
     msg['Subject'] = "HelloWorld"
-    msg['From'] = ""
+    msg['From'] = fromAddr
+    msg['To'] = toAddr
 
-
+   
     smtpObject = smtplib.SMTP(metuSmtpServer, metuSmtpPort)
     smtpObject.ehlo()
     smtpObject.starttls()
     resp = smtpObject.login(uid, pwd)
     if (resp):
         print("Login succesfull")
-
     else:
         print("Error")
+    smtpObject.sendmail(msg['From'], msg['To'], msg.as_string())
+    smtpObject.quit()
 
+if __name__ == "__main__":
+    uid = ""
+    pwd = ""
+    fromAddr = ""
+    
     with open("emails.txt","r") as file:
         for item in file:
-            msg['To'] = item
-            smtpObject.sendmail(msg['From'],msg['To'],msg.as_string())
-
+            session(uid,pwd,fromAddr,item)
         file.close()
-    smtpObject.quit()
